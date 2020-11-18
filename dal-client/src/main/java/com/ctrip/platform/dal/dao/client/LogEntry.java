@@ -53,6 +53,7 @@ public class LogEntry implements ILogEntry{
 	private String dbZone;
 	private String ucsValidation;
 	private String dalValidation;
+	private Long connectionId;
 
     /**
      * Internal performance recorder for performance cost in each stage.
@@ -491,4 +492,11 @@ public class LogEntry implements ILogEntry{
 		this.dalValidation = dalValidation;
 	}
 
+	public Long getConnectionId() {
+		return connectionId;
+	}
+
+	public void setConnectionId(Long connectionId) {
+		this.connectionId = connectionId;
+	}
 }
