@@ -54,6 +54,7 @@ public class LogEntry implements ILogEntry{
 	private String ucsValidation;
 	private String dalValidation;
 	private Long connectionId;
+	private Integer localPort;
 
     /**
      * Internal performance recorder for performance cost in each stage.
@@ -498,5 +499,13 @@ public class LogEntry implements ILogEntry{
 
 	public void setConnectionId(Long connectionId) {
 		this.connectionId = connectionId;
+	}
+
+	public Integer getLocalPort() {
+		return localPort;
+	}
+
+	public void setLocalPort(Integer localPort) {
+		this.localPort = localPort;
 	}
 }

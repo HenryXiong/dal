@@ -13,10 +13,13 @@ import java.util.concurrent.Callable;
 import com.ctrip.platform.dal.dao.*;
 import com.ctrip.platform.dal.dao.configure.DalConfigure;
 import com.ctrip.platform.dal.dao.helper.DalColumnMapRowMapper;
+import com.ctrip.platform.dal.dao.helper.DalElementFactory;
 import com.ctrip.platform.dal.dao.helper.DalRowMapperExtractor;
 import com.ctrip.platform.dal.dao.helper.HintsAwareExtractor;
+import com.ctrip.platform.dal.dao.log.ILogger;
 import com.ctrip.platform.dal.dao.task.DalTaskContext;
 import com.ctrip.platform.dal.exceptions.DalException;
+import com.mysql.jdbc.JDBC4Connection;
 import com.mysql.jdbc.MySQLConnection;
 
 /**
@@ -29,6 +32,8 @@ public class DalDirectClient implements DalContextClient {
     private DalConnectionManager connManager;
     private DalTransactionManager transManager;
     private DalLogger logger;
+
+    private static ILogger LOGGER = DalElementFactory.DEFAULT.getILogger();
 
     public DalDirectClient(DalConfigure config, String logicDbName) {
         connManager = new DalConnectionManager(logicDbName, config);
@@ -477,6 +482,12 @@ public class DalDirectClient implements DalContextClient {
             action.entry.setConnectionId(conn.unwrap(MySQLConnection.class).getId());
         }catch (Throwable t) {}
 
+        try {
+            action.entry.setLocalPort(conn.unwrap(JDBC4Connection.class).getIO().mysqlConnection.getLocalPort());
+        }catch (Throwable e) {
+
+        }
+        LOGGER.info("connectionId: " + action.entry.getConnectionId() + " localPort: " + action.entry.getLocalPort());
         action.endConnect();
         return conn;
     }
